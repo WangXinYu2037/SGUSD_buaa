@@ -27,5 +27,5 @@ while pointNums > 0         %scatter in the [0,100]*[0,100]
     %hold on;
     %plot(A(Nall-pointNums),B(Nall-pointNums),'b.')
 end
-scatter(A, B, 'b.');
+scatter(A, B, 'b', 'filled');
 grid on;

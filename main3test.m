@@ -17,7 +17,7 @@ PM_equi = zeros(M, 2);
 PK = xlsread("./groundUser");
 
 R = 1; % round
-T = 50; % seconds
+T = 40; % seconds
 
 % -------------------- Part 2 预处理，优化算法速度 ------------------------
 % 这里是先获取一些常量，以优化算法运行速度
@@ -93,22 +93,48 @@ for r = 1:R
         % 存储5^M个效用 和 对应的5^M 个beta
         utilityM = zeros(5^M, 1);
         betaM = zeros(5^M, N);
+        
         for m = 1: 5^M
             alpha = AM(m, :);
             
-            % 对于M越界的情况，要特殊处理
-            %[PM_Now] = changePositionPM(PM_Now, alpha);
+            
+            % 对于M越界的情况，要特殊处理，设置效用为正无穷，避免选择该策略
+            isOut = checkOut(PM_Now, PN_Now, alpha, zeros(1, N));
+            if isOut == 1
+                utilityM(m) = inf;
+                fprintf("发生出界情况m: %d\n", m);
+                continue
+            end
+            isCollided = checkCollision(PM_Now, PN_Now, alpha, zeros(1, N));
+            if isCollided == 1
+                utilityM(m) = inf;
+                fprintf("发生碰撞情况m: %d\n", m);
+                continue
+            end
+            
             
             % 5^N个效用 和 beta
             utilityN = zeros(5^N, 1);
-            
             for n = 1: 5^N
                 %fprintf("进度: %d\n", 5^N * (m - 1) + n);
                 beta = A(n, :);
                 
+                
+                % 对于N越界的情况，要特殊处理，设置效用为负无穷，避免选择该策略
+                isOut = checkOut(PM_Now, PN_Now, zeros(1, M), beta);
+                if isOut == 1
+                    utilityN(n) = -inf;
+                    continue
+                end
+                isCollided = checkCollision(PM_Now, PN_Now, zeros(1, M), beta);
+                if isCollided == 1
+                    utilityN(n) = -inf;
+                    continue
+                end
+                
+                
                 % 得到了alpha和beta，计算payoff
                 % 计算效用的同时要检查是否满足约束函数
-                
                 ut = utilityCompute(PM_Now, PN_Now, alpha, beta, PK);
                 utilityN(n) = ut;
                 %fprintf("ut: %d\n", ut);
@@ -127,9 +153,9 @@ for r = 1:R
         % 最大值中取最小值
         % 获取第t轮运行的Stackelberg Equilibrium point。
         % 也即第t轮的alpha, beta
-        [utilityMin, pos] = min(utilityM);
-        alpha = AM(pos, :);
-        beta = betaM(pos, :);
+        [utilityMin, pos] = min(utilityM)
+        alpha = AM(pos, :)
+        beta = betaM(pos, :)
         % 输出，存储
         fprintf("utilityMin and alpha ,beta\n")
         uT(t) = utilityMin;

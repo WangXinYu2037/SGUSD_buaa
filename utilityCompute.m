@@ -107,11 +107,11 @@ for k = 1: K
     
     gamma_nk = Pnk / (Ik + sigma ^2);
     Cnk = B * log2(1 + gamma_nk);
-    Lk = 0.1 * Cnk / lambdaN(uav_n); % 时间间隔是1s
+    Lk = 10 * Cnk / lambdaN(uav_n); % 时间间隔是10s
     
     ut = ut + Lk;
 end
 
-
+% 这里单位是bit
 
 

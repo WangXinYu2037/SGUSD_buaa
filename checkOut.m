@@ -1,4 +1,4 @@
-function [isOut] = checkOut(PM_Now, PN_Now)
+function [isOut] = checkOut(PM_Now, PN_Now, alpha, beta)
 % 这里需要声明任务区域
 a = 0; b = 100;
 c = 0; d = 100; %取[0,100]*[0,100]*[100]的布点区域；
@@ -6,6 +6,9 @@ c = 0; d = 100; %取[0,100]*[0,100]*[100]的布点区域；
 isOut = 0;
 M = length(PM_Now);
 N = length(PN_Now);
+
+% 计算未来的情况
+[PM_Now, PN_Now] = changePosition(PM_Now, PN_Now, alpha, beta);
 
 for m = 1:M
     if PM_Now(m, 1) < a || PM_Now(m, 1) > b

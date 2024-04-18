@@ -1,6 +1,8 @@
-function [isCollided] = checkCollision(PM_Now, PN_Now)
+function [isCollided] = checkCollision(PM_Now, PN_Now, alpha, beta)
 
 isCollided = 0;
+
+[PM_Now, PN_Now] = changePosition(PM_Now, PN_Now, alpha, beta);
 
 collision1 = length(PN_Now) - length(unique(PN_Now, 'rows'));
 
@@ -16,7 +18,7 @@ if collision2 ~= 0
     return
 end
 
-% 先矩阵检查相等，然后查看是否[1 1]是检查结果的成员
+% 对行向量取交集，然后看是否是空集
 tmp = intersect(PM_Now, PN_Now, 'rows');
 
 if ~isempty(tmp)
