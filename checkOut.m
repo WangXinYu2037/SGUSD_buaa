@@ -1,7 +1,7 @@
 function [isOut] = checkOut(PM_Now, PN_Now, alpha, beta)
 % 这里需要声明任务区域
-a = 0; b = 100;
-c = 0; d = 100; %取[0,100]*[0,100]*[100]的布点区域；
+a = 0; b = 50;
+c = 0; d = 50; %取[0,100]*[0,100]*[100]的布点区域；
 
 isOut = 0;
 M = length(PM_Now);

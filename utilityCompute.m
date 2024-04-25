@@ -70,6 +70,8 @@ sigma = n0 * B; % dBm
 sigma = (10 ^(sigma / 10)) * 0.001; % 瓦
 
 ut = 0;
+% 存储K个用户的效用
+
 for k = 1: K
     user = PK(k, :);    % 用户坐标
     uav_n = deltaK(k);  % 匹配的UAV n
@@ -108,7 +110,7 @@ for k = 1: K
     gamma_nk = Pnk / (Ik + sigma ^2);
     Cnk = B * log2(1 + gamma_nk);
     Lk = 10 * Cnk / lambdaN(uav_n); % 时间间隔是10s
-    
+    Lk_K(k) = Lk;
     ut = ut + Lk;
 end
 

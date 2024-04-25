@@ -1,5 +1,9 @@
+# data
+./data
+./Visualization/
 # asv
 *.asv
+test.m
 
 # xlsx
 *.xlsx
